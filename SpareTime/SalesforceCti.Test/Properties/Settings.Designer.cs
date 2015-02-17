@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SalesforceCti.Test.Properties
+namespace Spare.Test.Properties
 {
 
 

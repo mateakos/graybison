@@ -3,7 +3,7 @@ var jsonService = "http://localhost";
 
 var com = {
     graybison: {
-        salesforcecti: {
+        spare: {
             client: {
                 version: "v0.1",
                 defaultTimeout: 15000,
@@ -16,10 +16,10 @@ var com = {
                 {
                     //client identifier
                     var req = {
-                        identifier : com.graybison.salesforcecti.client.clientid
+                        identifier : com.graybison.Spare.client.clientid
                     };
 
-                    var tm = com.graybison.salesforcecti.client.defaultTimeout;
+                    var tm = com.graybison.Spare.client.defaultTimeout;
                     if (req.hasOwnProperty("timeout")) {
                         tm = req.timeout;
                     }
@@ -28,7 +28,7 @@ var com = {
                         datatype: 'jsonp',
                         data: req,
                         success: function (data) {
-                            com.graybison.salesforcecti.client.Heartbeat();
+                            com.graybison.Spare.client.Heartbeat();
                         },
                         timeout: tm,
                         error: function (jqXHR, textStatus, errorThrown) {
@@ -39,7 +39,7 @@ var com = {
 
                 LoginAgent: function (req, callback) {
                     if (callback === undefined) return;
-                    var tm = com.graybison.salesforcecti.client.defaultTimeout;
+                    var tm = com.graybison.Spare.client.defaultTimeout;
                     if (req.hasOwnProperty("timeout")) {
                         tm = req.timeout;
                     }
@@ -59,7 +59,7 @@ var com = {
 
                 LogoutAgent: function (req, callback) {
                     if (callback === undefined) return;
-                    var tm = com.graybison.salesforcecti.client.defaultTimeout;
+                    var tm = com.graybison.Spare.client.defaultTimeout;
                     if (req.hasOwnProperty("timeout")) {
                         tm = req.timeout;
                     }
@@ -79,7 +79,7 @@ var com = {
 
                 SetAgentState: function (req, callback) {
                     if (callback === undefined) return;
-                    var tm = com.graybison.salesforcecti.client.defaultTimeout;
+                    var tm = com.graybison.Spare.client.defaultTimeout;
                     if (req.hasOwnProperty("timeout")) {
                         tm = req.timeout;
                     }

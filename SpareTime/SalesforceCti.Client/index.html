@@ -6,7 +6,7 @@
     <script src="scripts/jquery-1.11.2.js"></script>
     <script>
         function heartbeat() {
-            com.graybison.salesforcecti.client.Heartbeat({ identifier: "1" }, function (response) {
+            com.graybison.spare.client.Heartbeat({ identifier: "1" }, function (response) {
                 if (response.Result) {
                     alert(response.Result);
                 } else {
@@ -24,7 +24,7 @@
                 workmode: $("#workmode").val()
             }
 
-            com.graybison.salesforcecti.client.LoginAgent(req, function (response) {
+            com.graybison.spare.client.LoginAgent(req, function (response) {
                 if (response.Result) {
                     alert(response.Data);
                 } else {
@@ -39,7 +39,7 @@
                 station: $("#station").val(),
                 reason : "0"
             }
-            com.graybison.salesforcecti.client.LogoutAgent(req, function (response) {
+            com.graybison.spare.client.LogoutAgent(req, function (response) {
                 if (response.Result) {
                     alert(response.Data);
                 } else {
@@ -57,7 +57,7 @@
                 reason: $("#reason").val(),
             }
 
-            com.graybison.salesforcecti.client.SetAgentState(req, function (response) {
+            com.graybison.spare.client.SetAgentState(req, function (response) {
                 if (response.Result) {
                     alert(response.Data);
                 } else {
