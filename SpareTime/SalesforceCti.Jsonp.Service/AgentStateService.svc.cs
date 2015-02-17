@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Activation;
 
-namespace SalesforceCti.Jsonp.Service
+namespace Spare.Jsonp.Service
 {
    [AspNetCompatibilityRequirements(RequirementsMode =
        AspNetCompatibilityRequirementsMode.Allowed)]

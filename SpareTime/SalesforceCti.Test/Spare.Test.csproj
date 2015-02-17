@@ -78,9 +78,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SalesforceCti.Jsonp\SalesforceCti.Jsonp.csproj">
+    <ProjectReference Include="..\SalesforceCti.Jsonp\Spare.Jsonp.csproj">
       <Project>{6e9bce56-af3b-4d0e-8302-832d7685bac1}</Project>
-      <Name>SalesforceCti.Jsonp</Name>
+      <Name>Spare.Jsonp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

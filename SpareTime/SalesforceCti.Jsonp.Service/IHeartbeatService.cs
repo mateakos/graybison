@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 
-namespace SalesforceCti.Jsonp.Service
+namespace Spare.Jsonp.Service
 {
     [ServiceContract]
     public interface IHeartbeatService
@@ -17,6 +17,6 @@ namespace SalesforceCti.Jsonp.Service
         [WebGet(BodyStyle = WebMessageBodyStyle.Bare,
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json)]
-        SalesforceCti.Jsonp.Generic.Response Heartbeat(string identifier);
+        Spare.Jsonp.Generic.Response Heartbeat(string identifier);
     }
 }

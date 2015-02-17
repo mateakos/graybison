@@ -7,9 +7,9 @@ using System.Text;
 using System.ComponentModel;
 using System.ServiceModel.Web;
 
-using SalesforceCti.Jsonp.Generic;
+using Spare.Jsonp.Generic;
 
-namespace SalesforceCti.Jsonp.Service
+namespace Spare.Jsonp.Service
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IAgentStateService" in both code and config file together.
     [ServiceContract]

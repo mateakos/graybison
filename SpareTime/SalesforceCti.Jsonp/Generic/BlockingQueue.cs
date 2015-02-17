@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using Newtonsoft.Json.Linq;
 
-namespace SalesforceCti.Jsonp.Generic
+namespace Spare.Jsonp.Generic
 {
     public class BlockingQueue<T> : IEnumerable<JObject>
     {
@@ -33,7 +33,7 @@ namespace SalesforceCti.Jsonp.Generic
             }
         }
 
-        IEnumerator<JObject> IEnumerable<JObject>.GetEnumerator()
+        IEnumerator<T> IEnumerable<JObject>.GetEnumerator()
         {
             while (true) yield return Dequeue();
         }

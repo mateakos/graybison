@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using SalesforceCti.Jsonp.Generic;
+using Spare.Jsonp.Generic;
 using log4net;
 
-namespace SalesforceCti.Jsonp
+namespace Spare.Jsonp
 {
     public class JsonService
     {
         private static JsonService _service;
-        private SalesforceCti.Tsapi.TelephonyServiceManager _ctiService;
+        private Spare.Tsapi.TelephonyServiceManager _ctiService;
         private bool _initated = false;
         private readonly ILog _log = LogManager.GetLogger(typeof(JsonService));
 

@@ -1,4 +1,4 @@
-﻿namespace SalesforceCti.Test
+﻿namespace Spare.Test
 {
     partial class Form1
     {

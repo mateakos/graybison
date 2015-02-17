@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using SalesforceCti.Jsonp;
+using Spare.Jsonp;
 
-namespace SalesforceCti.Test
+namespace Spare.Test
 {
     public partial class Form1 : Form
     {
@@ -21,7 +21,7 @@ namespace SalesforceCti.Test
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SalesforceCti.Jsonp.WebServiceManager wsMgr = new WebServiceManager(urlTxt.Text, Convert.ToInt32(portTxt.Text));
+            Spare.Jsonp.WebServiceManager wsMgr = new WebServiceManager(urlTxt.Text, Convert.ToInt32(portTxt.Text));
             wsMgr.Start();
         }
     }
