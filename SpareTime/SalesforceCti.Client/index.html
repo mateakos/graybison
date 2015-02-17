@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="scripts/sfcti.js"></script>
+    <script src="scripts/jquery-1.11.2.js"></script>
+    <script>
+        function heartbeat() {
+            com.graybison.salesforcecti.client.Heartbeat({ identifier: "1" }, function (response) {
+                if (response.Result) {
+                    alert(response.Result);
+                } else {
+                    alert('No result');
+                }
+            });
+        }
+
+        function login() {
+
+            var req = {
+                agent: $("#agentid").val(),
+                password: $("#pwd").val(),
+                station: $("#station").val(),
+                workmode: $("#workmode").val()
+            }
+
+            com.graybison.salesforcecti.client.LoginAgent(req, function (response) {
+                if (response.Result) {
+                    alert(response.Data);
+                } else {
+                    alert('No result');
+                }
+            });
+        }
+
+        function logout() {
+            var req = {
+                agent: $("#agentid").val(),
+                station: $("#station").val(),
+                reason : "0"
+            }
+            com.graybison.salesforcecti.client.LogoutAgent(req, function (response) {
+                if (response.Result) {
+                    alert(response.Data);
+                } else {
+                    alert('No result');
+                }
+            });
+        }
+
+        function setstate() {
+
+            var req = {
+                agent: $("#agentid").val(),
+                station: $("#station").val(),
+                workmode: $("#workmode").val(),
+                reason: $("#reason").val(),
+            }
+
+            com.graybison.salesforcecti.client.SetAgentState(req, function (response) {
+                if (response.Result) {
+                    alert(response.Data);
+                } else {
+                    alert('No result');
+                }
+            });
+        }
+     </script>
+</head>
+<body>
+    <div>
+        <div>
+            <label>Agent Id</label>&nbsp;
+            <input type="text" id="agentid"/>
+        </div>
+        <div>
+            <label>Password</label>&nbsp;
+            <input type="password" id="pwd"/></div>
+        <div>
+            <label>Station</label>&nbsp;
+            <input type="text" id="station"/></div>
+        <div>
+            <label>Work Mode</label>
+            <select id="workmode">
+                <option selected="selected" value="Auxiliary">Auxiliary</option>
+                <option value="AfterCallWork">After Call Work</option>
+                <option value="AutoIn">Auto In</option>
+                <option value="ManualIn">Manual In</option>
+            </select>
+            <label>Reason</label>&nbsp;
+            <input type="text" id="reason"/>
+
+        </div>
+    </div>
+    <input id="Button1" type="button" value="Heartbeat" onclick="heartbeat()" />
+    <input id="Button3" type="button" value="Login" onclick="login()" />
+    <input id="Button4" type="button" value="Logout" onclick="logout()" />
+    <input id="Button5" type="button" value="SetAgentState" onclick="setstate()" />
+    <div class="msg" id="dconsole" style="width: 184px; height: 40px; margin-left: 2px; position: absolute; bottom: 2px">
+            <table> 
+                <tr>
+                    <td>Salesforce CTI </td>
+                </tr>
+            </table>
+        </div>
+</body>
+</html>
