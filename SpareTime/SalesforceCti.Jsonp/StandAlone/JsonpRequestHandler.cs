@@ -6,7 +6,7 @@ using System.Threading;
 
 using Newtonsoft.Json.Linq;
 
-namespace SalesforceCti.Jsonp
+namespace Spare.Jsonp
 {
     public class JsonpRequestHandler : HttpServer.HttpModules.HttpModule
     {

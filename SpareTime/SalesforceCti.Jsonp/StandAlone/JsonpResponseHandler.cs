@@ -5,7 +5,7 @@ using System.Text;
 
 using Newtonsoft.Json.Linq;
 
-namespace SalesforceCti.Jsonp
+namespace Spare.Jsonp
 {
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
     public class JsonpResponseHandler

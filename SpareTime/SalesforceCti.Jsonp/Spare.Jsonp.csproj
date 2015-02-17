@@ -100,6 +100,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SalesforceCti.Tsapi\Spare.Tsapi.csproj">
+      <Project>{38b6ddf0-8c97-427f-b8fa-e0925b986502}</Project>
+      <Name>Spare.Tsapi</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

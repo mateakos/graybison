@@ -5,7 +5,7 @@ using System.Text;
 using System.Reflection;
 using System.IO;
 
-namespace SalesforceCti.Jsonp
+namespace Spare.Jsonp
 {
     public class FileHandler : HttpServer.HttpModules.HttpModule
     {

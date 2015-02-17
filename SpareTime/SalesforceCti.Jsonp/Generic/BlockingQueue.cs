@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Spare.Jsonp.Generic
 {
-    public class BlockingQueue<T> : IEnumerable<JObject>
+    public class BlockingQueue : IEnumerable<JObject>
     {
         private int _count = 0;
         private Queue<JObject> _queue = new Queue<JObject>();
@@ -33,12 +33,17 @@ namespace Spare.Jsonp.Generic
             }
         }
 
-        IEnumerator<T> IEnumerable<JObject>.GetEnumerator()
+        public IEnumerator<JObject> GetEnumerator()
         {
             while (true) yield return Dequeue();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        //IEnumerator<JObject> IEnumerable<JObject>.GetEnumerator()
+        //{
+        //    while (true) yield return Dequeue();
+        //}
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             while (true) yield return Dequeue();
         }

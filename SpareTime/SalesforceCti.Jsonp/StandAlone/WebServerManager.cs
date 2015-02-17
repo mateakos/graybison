@@ -5,7 +5,7 @@ using System.Text;
 
 using log4net;
 
-namespace SalesforceCti.Jsonp
+namespace Spare.Jsonp
 {
     public class WebServiceManager
     {
