@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -7,45 +8,88 @@ using Newtonsoft.Json.Linq;
 
 namespace Spare.Jsonp.Generic
 {
-    public class BlockingQueue : IEnumerable<JObject>
+    public class BlockingQueue
     {
-        private int _count = 0;
-        private Queue<JObject> _queue = new Queue<JObject>();
+        private bool _closing;
+        private readonly Queue<JObject> _queue = new Queue<JObject>();
 
-        public JObject Dequeue()
+        public BlockingQueue()
         {
             lock (_queue)
             {
-                while (_count <= 0) Monitor.Wait(_queue);
-                _count--;
-                return _queue.Dequeue();
+                _closing = false;
+                Monitor.PulseAll(_queue);
             }
         }
 
-        public void Enqueue(JObject data)
+        public int Count
+        {
+            get
+            {
+                lock (_queue)
+                {
+                    return _queue.Count;
+                }
+            }
+        }
+
+        public bool Enqueue(JObject data)
         {
             if (data == null) throw new ArgumentNullException("data");
             lock (_queue)
             {
+                if (_closing || null == data)
+                {
+                    return false;
+                }
+
                 _queue.Enqueue(data);
-                _count++;
-                Monitor.Pulse(_queue);
+
+                if (_queue.Count > 0)
+                    Monitor.Pulse(_queue);
+
+                return true;
             }
         }
 
-        public IEnumerator<JObject> GetEnumerator()
+        public bool TryDequeue(out JObject value, int timeout = Timeout.Infinite)
         {
-            while (true) yield return Dequeue();
+            lock (_queue)
+            {
+                while (_queue.Count == 0)
+                {
+                    if (_closing || (timeout < Timeout.Infinite) || !Monitor.Wait(_queue, timeout))
+                    {
+                        value = default(JObject);
+                        return false;
+                    }
+                }
+
+                value = _queue.Dequeue();
+                return true;
+            }
         }
 
-        //IEnumerator<JObject> IEnumerable<JObject>.GetEnumerator()
-        //{
-        //    while (true) yield return Dequeue();
-        //}
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        public void Close()
         {
-            while (true) yield return Dequeue();
+            lock (_queue)
+            {
+                if (!_closing)
+                {
+                    _closing = true;
+                    _queue.Clear();
+                    Monitor.PulseAll(_queue);
+                }
+            }
+        }
+
+        public void Clear()
+        {
+            lock (_queue)
+            {
+                _queue.Clear();
+                Monitor.Pulse(_queue);
+            }
         }
     }
 }

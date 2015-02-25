@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Newtonsoft.Json.Linq;
+
 namespace Spare.Jsonp.Generic
 {
     public class Response 
@@ -10,6 +12,10 @@ namespace Spare.Jsonp.Generic
         public Response() { }
 
         public bool Result { get; set; }
+
+        public Guid Identifier { get; set; }
+
+        public string Event { get; set; }
 
         public string Data { get; set; }
 

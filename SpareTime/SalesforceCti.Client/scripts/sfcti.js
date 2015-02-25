@@ -7,6 +7,7 @@ var com = {
             client: {
                 version: "v0.1",
                 defaultTimeout: 15000,
+                queueTimeout: 30000,
                 clientid : "",
                 random: function (min, max) {
                     return Math.floor(Math.random() * (max - min) + min);
@@ -14,23 +15,19 @@ var com = {
 
                 Heartbeat : function()
                 {
-                    //client identifier
                     var req = {
-                        identifier : com.graybison.Spare.client.clientid
-                    };
-
-                    var tm = com.graybison.Spare.client.defaultTimeout;
-                    if (req.hasOwnProperty("timeout")) {
-                        tm = req.timeout;
+                        identifier: com.graybison.spare.client.clientid
                     }
+
                     var jqXHR = $.ajax({
                         url: jsonService + ":" + sfctiport + "/HeartbeatService.svc/Heartbeat?jsoncallback=?",
                         datatype: 'jsonp',
                         data: req,
                         success: function (data) {
-                            com.graybison.Spare.client.Heartbeat();
+                            com.graybison.spare.client.clientid = data.Identifier;
+                            com.graybison.spare.client.Heartbeat();
                         },
-                        timeout: tm,
+                        timeout: com.graybison.spare.client.queueTimeout,
                         error: function (jqXHR, textStatus, errorThrown) {
                             $("#dconsole").html("Event queue error: " + textStatus + ", " + errorThrown);
                     }
@@ -39,7 +36,7 @@ var com = {
 
                 LoginAgent: function (req, callback) {
                     if (callback === undefined) return;
-                    var tm = com.graybison.Spare.client.defaultTimeout;
+                    var tm = com.graybison.spare.client.defaultTimeout;
                     if (req.hasOwnProperty("timeout")) {
                         tm = req.timeout;
                     }
@@ -59,7 +56,7 @@ var com = {
 
                 LogoutAgent: function (req, callback) {
                     if (callback === undefined) return;
-                    var tm = com.graybison.Spare.client.defaultTimeout;
+                    var tm = com.graybison.spare.client.defaultTimeout;
                     if (req.hasOwnProperty("timeout")) {
                         tm = req.timeout;
                     }
@@ -79,7 +76,7 @@ var com = {
 
                 SetAgentState: function (req, callback) {
                     if (callback === undefined) return;
-                    var tm = com.graybison.Spare.client.defaultTimeout;
+                    var tm = com.graybison.spare.client.defaultTimeout;
                     if (req.hasOwnProperty("timeout")) {
                         tm = req.timeout;
                     }
@@ -91,6 +88,24 @@ var com = {
                             callback(data);
                         },
                         timeout: tm,
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            callback({ error: textStatus });
+                        }
+                    });
+                },
+
+                MonitorStation: function (req, callback) {
+                    if (callback === undefined) return;
+                    
+                    req.identifier = com.graybison.spare.client.clientid
+                    var jqXHR = $.ajax({
+                        url: jsonService + ":" + sfctiport + "/StationService.svc/CallObserve?jsoncallback=?",
+                        datatype: 'jsonp',
+                        data: req,
+                        success: function (data) {
+                            callback(data);
+                        },
+                        timeout: com.graybison.spare.client.defaultTimeout,
                         error: function (jqXHR, textStatus, errorThrown) {
                             callback({ error: textStatus });
                         }

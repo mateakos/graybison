@@ -8,8 +8,8 @@
     <ProjectGuid>{6E9BCE56-AF3B-4D0E-8302-832D7685BAC1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SalesforceCti.Jsonp</RootNamespace>
-    <AssemblyName>SalesforceCti.Jsonp</AssemblyName>
+    <RootNamespace>Spare.Jsonp</RootNamespace>
+    <AssemblyName>Spare.Jsonp</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
@@ -67,6 +67,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity\Entity.cs" />
+    <Compile Include="Entity\EntityCollection.cs" />
     <Compile Include="Generic\AgentWorkMode.cs" />
     <Compile Include="Generic\BlockingQueue.cs" />
     <Compile Include="Generic\LoginResponse.cs" />

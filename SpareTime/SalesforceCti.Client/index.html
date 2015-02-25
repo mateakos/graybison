@@ -6,9 +6,8 @@
     <script src="scripts/jquery-1.11.2.js"></script>
     <script>
         function heartbeat() {
-            com.graybison.spare.client.Heartbeat({ identifier: "1" }, function (response) {
+            com.graybison.spare.client.Heartbeat({ }, function (response) {
                 if (response.Result) {
-                    alert(response.Result);
                 } else {
                     alert('No result');
                 }
@@ -55,6 +54,22 @@
                 station: $("#station").val(),
                 workmode: $("#workmode").val(),
                 reason: $("#reason").val(),
+            }
+
+            com.graybison.spare.client.SetAgentState(req, function (response) {
+                if (response.Result) {
+                    alert(response.Data);
+                } else {
+                    alert('No result');
+                }
+            });
+        }
+
+        function callobserve() {
+
+            var req = {
+                identifier: $("#cid").val(),
+                station: $("#station").val(),
             }
 
             com.graybison.spare.client.SetAgentState(req, function (response) {

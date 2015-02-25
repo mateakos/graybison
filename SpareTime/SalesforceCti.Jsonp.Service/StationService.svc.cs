@@ -7,21 +7,18 @@ namespace Spare.Jsonp.Service
 {
     [AspNetCompatibilityRequirements(RequirementsMode =
         AspNetCompatibilityRequirementsMode.Allowed)]
-    public class HeartbeatService : IHeartbeatService
+    public class StationService : IStationService
     {
         private Spare.Jsonp.JsonService _service;
 
-        public HeartbeatService()
+        public StationService()
         {
             _service = JsonService.GetInstance();
         }
 
-        public Spare.Jsonp.Generic.Response Heartbeat(string identifier)
+        public Spare.Jsonp.Generic.Response CallObserve(string identifier, string extension)
         {
-            Guid id = Guid.Empty;
-            Guid.TryParse(identifier, out id);
-            return _service.Heartbeat(id);
+            return _service.Heartbeat(Guid.Empty);
         }
     }
-
 }

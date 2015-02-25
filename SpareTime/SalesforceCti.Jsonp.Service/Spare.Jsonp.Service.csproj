@@ -63,6 +63,7 @@
   <ItemGroup>
     <Content Include="AgentStateService.svc" />
     <Content Include="HeartbeatService.svc" />
+    <Content Include="StationService.svc" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -76,7 +77,11 @@
     </Compile>
     <Compile Include="IAgentStateService.cs" />
     <Compile Include="IHeartbeatService.cs" />
+    <Compile Include="IStationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StationService.svc.cs">
+      <DependentUpon>StationService.svc</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Web.Debug.config">
