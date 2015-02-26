@@ -72,6 +72,7 @@
     <Compile Include="Generic\AgentWorkMode.cs" />
     <Compile Include="Generic\BlockingQueue.cs" />
     <Compile Include="Generic\LoginResponse.cs" />
+    <Compile Include="Generic\MessageConstant.cs" />
     <Compile Include="StandAlone\FileHandler.cs" />
     <Compile Include="StandAlone\JsonpRequestHandler.cs" />
     <Compile Include="StandAlone\JsonpResponseHandler.cs" />

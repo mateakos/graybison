@@ -4,14 +4,14 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Newtonsoft.Json.Linq;
+
 
 namespace Spare.Jsonp.Generic
 {
     public class BlockingQueue
     {
         private bool _closing;
-        private readonly Queue<JObject> _queue = new Queue<JObject>();
+        private readonly Queue<Response> _queue = new Queue<Response>();
 
         public BlockingQueue()
         {
@@ -33,7 +33,7 @@ namespace Spare.Jsonp.Generic
             }
         }
 
-        public bool Enqueue(JObject data)
+        public bool Enqueue(Response data)
         {
             if (data == null) throw new ArgumentNullException("data");
             lock (_queue)
@@ -52,7 +52,7 @@ namespace Spare.Jsonp.Generic
             }
         }
 
-        public bool TryDequeue(out JObject value, int timeout = Timeout.Infinite)
+        public bool TryDequeue(out Response value, int timeout = Timeout.Infinite)
         {
             lock (_queue)
             {
@@ -60,7 +60,7 @@ namespace Spare.Jsonp.Generic
                 {
                     if (_closing || (timeout < Timeout.Infinite) || !Monitor.Wait(_queue, timeout))
                     {
-                        value = default(JObject);
+                        value = default(Response);
                         return false;
                     }
                 }

@@ -20,7 +20,15 @@ namespace Spare.Jsonp.Service
         [WebGet(BodyStyle = WebMessageBodyStyle.Bare,
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json)]
-        LoginResponse LoginAgent(string agent, string password, string station, Generic.AgentWorkMode workmode);
+        Spare.Jsonp.Generic.LoginResponse LoginAgent(string identifier, string agent, string password, string station, Generic.AgentWorkMode workmode);
+        
+
+        [OperationContract]
+        [Description("Maintains heartbeat between client and server")]
+        [WebGet(BodyStyle = WebMessageBodyStyle.Bare,
+            RequestFormat = WebMessageFormat.Json,
+            ResponseFormat = WebMessageFormat.Json)]
+        Spare.Jsonp.Generic.Response LogoutAgent(string identifier, string agent, string station, int reason = 0);
 
 
         [OperationContract]
@@ -28,14 +36,6 @@ namespace Spare.Jsonp.Service
         [WebGet(BodyStyle = WebMessageBodyStyle.Bare,
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json)]
-        Response LogoutAgent(string agent, string station, int reason = 0);
-
-
-        [OperationContract]
-        [Description("Maintains heartbeat between client and server")]
-        [WebGet(BodyStyle = WebMessageBodyStyle.Bare,
-            RequestFormat = WebMessageFormat.Json,
-            ResponseFormat = WebMessageFormat.Json)]
-        Response SetAgentState(string agent, string station, Generic.AgentWorkMode workmode, int reason);
+        Spare.Jsonp.Generic.Response SetAgentState(string identifier, string agent, string station, Generic.AgentWorkMode workmode, int reason);
     }
 }

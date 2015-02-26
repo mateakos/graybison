@@ -18,7 +18,9 @@ namespace Spare.Jsonp.Service
 
         public Spare.Jsonp.Generic.Response CallObserve(string identifier, string extension)
         {
-            return _service.Heartbeat(Guid.Empty);
+            Guid id = Guid.Empty;
+            Guid.TryParse(identifier, out id);
+            return _service.CallObserve(id, extension);
         }
     }
 }

@@ -16,19 +16,25 @@ namespace Spare.Jsonp.Service
            _service = JsonService.GetInstance();
        }
 
-        public Generic.LoginResponse LoginAgent(string agent, string password, string station, Generic.AgentWorkMode workmode)
+       public Spare.Jsonp.Generic.LoginResponse LoginAgent(string identifier, string agent, string password, string station, Generic.AgentWorkMode workmode)
         {
-            return _service.LoginAgent(agent, password, station, (Generic.AgentWorkMode)workmode);
+            Guid id = Guid.Empty;
+            Guid.TryParse(identifier, out id);
+            return _service.LoginAgent(id, agent, password, station, (Generic.AgentWorkMode)workmode);
         }
 
-        public Generic.Response LogoutAgent(string agent, string station, int reason = 0)
+       public Spare.Jsonp.Generic.Response LogoutAgent(string identifier, string agent, string station, int reason = 0)
         {
-            return _service.LogoutAgent(agent, station, reason);
+            Guid id = Guid.Empty;
+            Guid.TryParse(identifier, out id);
+            return _service.LogoutAgent(id, agent, station, reason);
         }
 
-        public Generic.Response SetAgentState(string agent, string station, Generic.AgentWorkMode workmode, int reason)
+       public Spare.Jsonp.Generic.Response SetAgentState(string identifier, string agent, string station, Generic.AgentWorkMode workmode, int reason)
         {
-            return _service.SetAgentState(agent, station, workmode, reason);
+            Guid id = Guid.Empty;
+            Guid.TryParse(identifier, out id);
+            return _service.SetAgentState(id, agent, station, workmode, reason);
         }
     }
 }

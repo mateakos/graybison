@@ -45,20 +45,8 @@ namespace Spare.Jsonp
                 _ctiService.Shutdown = true;
             }
             else { _ctiService.StartService();
-            _ctiService.OnLoggedOnEvent += _ctiService_OnLoggedOnEvent;
-            _ctiService.OnStartMonitorResponse += _ctiService_OnStartMonitorResponse;
             }
             _initated = true;
-        }
-
-        void _ctiService_OnStartMonitorResponse(string subjectDevice, Tsapi.MonitorConfirmationEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        void _ctiService_OnLoggedOnEvent(string subjectDevice, Tsapi.LoggedOnEventArgs e)
-        {
-            Console.WriteLine("Agent logged in event ");
         }
 
         #region Heartbeat
@@ -66,25 +54,22 @@ namespace Spare.Jsonp
         public Response Heartbeat(Guid id)
         {
             Entity.Entity client = _clients[id];
+
             if (client != null)
             {
                 client.Heartbeat();
-                client.PollEvent();
+                return client.PollEvent();
             }
             else
             {
-                client = new Entity.Entity();
+                client = new Entity.Entity(_ctiService);
                 _clients.Add(client);
             }
-
-            Dictionary<string, object> array = new Dictionary<string, object>();
-            array.Add("Id", client.Id);
 
             return new Response()
             {
                 Result = true,
                 Identifier = client.Id,
-                Data = Newtonsoft.Json.JsonConvert.SerializeObject(array),
                 Error = null
             };
         }
@@ -93,37 +78,46 @@ namespace Spare.Jsonp
 
         #region AgentState
 
-        public LoginResponse LoginAgent(string agent, string password, string station, AgentWorkMode workmode = AgentWorkMode.Auxiliary) {
-            if (_ctiService.LoginAgent(station, agent, password, (int)workmode))
+        public LoginResponse LoginAgent(Guid id, string agent, string password, string station, AgentWorkMode workmode = AgentWorkMode.Auxiliary) {
+            Entity.Entity client = _clients[id];
+            if ((id == Guid.Empty) || (client == null)) { return new LoginResponse() { Error = MessageConstant.UNREGISTERED }; };
+
+            if (client.LoginAgent(station, agent, password, (int)workmode))
             {
-                return new LoginResponse() { Result = true, Data = "Logged in" };
+                return new LoginResponse() { Result = true, Data = MessageConstant.SUCCESS_CTI_REQ };
             }
-            return new LoginResponse() { Error = "Failed" };
+            return new LoginResponse() { Error = MessageConstant.FAILED_CTI_REQ };
         }
 
-        public Response LogoutAgent(string agent, string station, int reason = 0)
-        {
-            if (_ctiService.LogoutAgent(station, agent,  reason))
+        public Response LogoutAgent(Guid id, string agent, string station, int reason = 0)
+        { 
+            Entity.Entity client = _clients[id];
+            if ((id == Guid.Empty) || (client == null)) { return new Response() { Error = MessageConstant.UNREGISTERED }; };
+
+            if (client.LogoutAgent(station, agent,  reason))
             {
-                return new Response() { Result = true, Data = "Logged out" };
+                return new Response() { Result = true, Data = MessageConstant.SUCCESS_CTI_REQ };
             }
-            return new Response() { Error = "Failed" };
+            return new Response() { Error = MessageConstant.FAILED_CTI_REQ };
         }
 
-        public Response SetAgentState(string agent, string station, AgentWorkMode workmode, int reason)
+        public Response SetAgentState(Guid id, string agent, string station, AgentWorkMode workmode, int reason)
         {
-            if (_ctiService.SetAgentState(station, agent, reason, (int)workmode))
+            Entity.Entity client = _clients[id];
+            if ((id == Guid.Empty) || (client == null)) { return new Response() { Error = MessageConstant.UNREGISTERED }; };
+
+            if (client.SetAgentState(station, agent, reason, (int)workmode))
             {
-                return new Response() { Result = true, Data = "State changed" };
+                return new Response() { Result = true, Data = MessageConstant.SUCCESS_CTI_REQ };
             }
-            return new Response() { Error = "Failed" };
+            return new Response() { Error = MessageConstant.FAILED_CTI_REQ };
         }
 
         #endregion
 
         #region StationService
 
-        Spare.Jsonp.Generic.Response CallObserve(Guid identifier, string extension)
+        public Spare.Jsonp.Generic.Response CallObserve(Guid identifier, string extension)
         {
             Entity.Entity client = _clients[identifier];
             if (client == null)
@@ -131,14 +125,14 @@ namespace Spare.Jsonp
                 return new Response()
                 {
                     Result = true,
-                    Data = "Client identifier not registered",
+                    Data = MessageConstant.UNREGISTERED,
                     Error = null
                 };
             }
 
-            string data = "Failed to send request to server";
-            if (_ctiService.Monitor(extension))
-                data = "Monitor request sent";
+            string data = MessageConstant.FAILED_CTI_REQ;
+            if (client.Monitor(extension))
+                data = MessageConstant.SUCCESS_CTI_REQ;
 
 
             return new Response()

@@ -25,6 +25,7 @@ var com = {
                         data: req,
                         success: function (data) {
                             com.graybison.spare.client.clientid = data.Identifier;
+                            com.graybison.spare.client.ProcessEvent(data);
                             com.graybison.spare.client.Heartbeat();
                         },
                         timeout: com.graybison.spare.client.queueTimeout,
@@ -36,10 +37,8 @@ var com = {
 
                 LoginAgent: function (req, callback) {
                     if (callback === undefined) return;
-                    var tm = com.graybison.spare.client.defaultTimeout;
-                    if (req.hasOwnProperty("timeout")) {
-                        tm = req.timeout;
-                    }
+                    req.identifier = com.graybison.spare.client.clientid;
+                    
                     var jqXHR = $.ajax({
                         url: jsonService + ":" + sfctiport + "/AgentStateService.svc/LoginAgent?jsoncallback=?",
                         datatype: 'jsonp',
@@ -47,7 +46,7 @@ var com = {
                         success: function (data) {
                             callback(data);
                         },
-                        timeout: tm,
+                        timeout: com.graybison.spare.client.queueTimeout,
                         error: function (jqXHR, textStatus, errorThrown) {
                             callback({ error: textStatus });
                         }
@@ -56,10 +55,7 @@ var com = {
 
                 LogoutAgent: function (req, callback) {
                     if (callback === undefined) return;
-                    var tm = com.graybison.spare.client.defaultTimeout;
-                    if (req.hasOwnProperty("timeout")) {
-                        tm = req.timeout;
-                    }
+                    req.identifier = com.graybison.spare.client.clientid;
                     var jqXHR = $.ajax({
                         url: jsonService + ":" + sfctiport + "/AgentStateService.svc/LogoutAgent?jsoncallback=?",
                         datatype: 'jsonp',
@@ -67,7 +63,7 @@ var com = {
                         success: function (data) {
                             callback(data);
                         },
-                        timeout: tm,
+                        timeout: com.graybison.spare.client.queueTimeout,
                         error: function (jqXHR, textStatus, errorThrown) {
                             callback({ error: textStatus });
                         }
@@ -76,10 +72,7 @@ var com = {
 
                 SetAgentState: function (req, callback) {
                     if (callback === undefined) return;
-                    var tm = com.graybison.spare.client.defaultTimeout;
-                    if (req.hasOwnProperty("timeout")) {
-                        tm = req.timeout;
-                    }
+                    req.identifier = com.graybison.spare.client.clientid;
                     var jqXHR = $.ajax({
                         url: jsonService + ":" + sfctiport + "/AgentStateService.svc/SetAgentState?jsoncallback=?",
                         datatype: 'jsonp',
@@ -87,7 +80,7 @@ var com = {
                         success: function (data) {
                             callback(data);
                         },
-                        timeout: tm,
+                        timeout: com.graybison.spare.client.queueTimeout,
                         error: function (jqXHR, textStatus, errorThrown) {
                             callback({ error: textStatus });
                         }
@@ -97,7 +90,7 @@ var com = {
                 MonitorStation: function (req, callback) {
                     if (callback === undefined) return;
                     
-                    req.identifier = com.graybison.spare.client.clientid
+                    req.identifier = com.graybison.spare.client.clientid;
                     var jqXHR = $.ajax({
                         url: jsonService + ":" + sfctiport + "/StationService.svc/CallObserve?jsoncallback=?",
                         datatype: 'jsonp',
@@ -110,6 +103,10 @@ var com = {
                             callback({ error: textStatus });
                         }
                     });
+                },
+
+                ProcessEvent: function (data) {
+                    $("#dconsole").html(data);
                 }
             }
         }

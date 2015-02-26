@@ -9,7 +9,7 @@
             com.graybison.spare.client.Heartbeat({ }, function (response) {
                 if (response.Result) {
                 } else {
-                    alert('No result');
+                    $("#dconsole").html('No result');
                 }
             });
         }
@@ -25,9 +25,9 @@
 
             com.graybison.spare.client.LoginAgent(req, function (response) {
                 if (response.Result) {
-                    alert(response.Data);
+                    $("#dconsole").html(response.Data);
                 } else {
-                    alert('No result');
+                    $("#dconsole").html('No result');
                 }
             });
         }
@@ -40,9 +40,9 @@
             }
             com.graybison.spare.client.LogoutAgent(req, function (response) {
                 if (response.Result) {
-                    alert(response.Data);
+                    $("#dconsole").html(response.Data);
                 } else {
-                    alert('No result');
+                    $("#dconsole").html('No result');
                 }
             });
         }
@@ -58,9 +58,9 @@
 
             com.graybison.spare.client.SetAgentState(req, function (response) {
                 if (response.Result) {
-                    alert(response.Data);
+                    $("#dconsole").html(response.Data);
                 } else {
-                    alert('No result');
+                    $("#dconsole").html('No result');
                 }
             });
         }
@@ -69,20 +69,21 @@
 
             var req = {
                 identifier: $("#cid").val(),
-                station: $("#station").val(),
+                extension: $("#station").val(),
             }
 
-            com.graybison.spare.client.SetAgentState(req, function (response) {
+            com.graybison.spare.client.MonitorStation(req, function (response) {
                 if (response.Result) {
-                    alert(response.Data);
+                    $("#dconsole").html(response.Data);
                 } else {
-                    alert('No result');
+                    $("#dconsole").html('No result');
                 }
             });
         }
+
      </script>
 </head>
-<body>
+<body onload="heartbeat();">
     <div>
         <div>
             <label>Agent Id</label>&nbsp;
@@ -107,10 +108,11 @@
 
         </div>
     </div>
-    <input id="Button1" type="button" value="Heartbeat" onclick="heartbeat()" />
+    <!--<input id="Button1" type="button" value="Heartbeat" onclick="heartbeat()" />-->
     <input id="Button3" type="button" value="Login" onclick="login()" />
     <input id="Button4" type="button" value="Logout" onclick="logout()" />
     <input id="Button5" type="button" value="SetAgentState" onclick="setstate()" />
+    <input id="Button6" type="button" value="Monitor" onclick="callobserve()" />
     <div class="msg" id="dconsole" style="width: 184px; height: 40px; margin-left: 2px; position: absolute; bottom: 2px">
             <table> 
                 <tr>
