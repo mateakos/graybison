@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AgentStateService.svc" />
+    <Content Include="Global.asax" />
     <Content Include="HeartbeatService.svc" />
     <Content Include="StationService.svc" />
     <Content Include="Web.config">
@@ -71,6 +72,9 @@
   <ItemGroup>
     <Compile Include="AgentStateService.svc.cs">
       <DependentUpon>AgentStateService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HeartbeatService.svc.cs">
       <DependentUpon>HeartbeatService.svc</DependentUpon>
