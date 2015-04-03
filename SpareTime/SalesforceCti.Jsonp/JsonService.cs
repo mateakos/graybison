@@ -11,16 +11,14 @@ namespace Spare.Jsonp
     public class JsonService
     {
         private static JsonService _service;
-        private Spare.Tsapi.TelephonyServiceManager _ctiService;
-        private bool _initated = false;
+        private CTIService _ctiService;
         private readonly ILog _log = LogManager.GetLogger(typeof(JsonService));
         private Entity.EntityCollection _clients;
 
         private JsonService()
         {
-            _ctiService = new Tsapi.TelephonyServiceManager("graybison");
             _clients = new Entity.EntityCollection();
-            Initialize();
+            _ctiService = new CTIService(_clients);
         }
 
         public static JsonService GetInstance()
@@ -33,27 +31,23 @@ namespace Spare.Jsonp
             }
         }
 
-        public bool IsInitialized
+        public static void EndInstance()
         {
-            get { return _initated; }
+            lock (typeof(JsonService))
+            {
+                if (_service != null)
+                {
+                    _service._ctiService.Stop();
+                }
+            }
         }
 
-        private void Initialize()
-        {
-            if (!_ctiService.Open("AVAYA#CM#CSTA#HUBIVSR83", "tman", "Tm@npassw0rd"))
-            {
-                _ctiService.Shutdown = true;
-            }
-            else { _ctiService.StartService();
-            }
-            _initated = true;
-        }
 
         #region Heartbeat
 
         public Response Heartbeat(Guid id)
         {
-            Entity.Entity client = _clients[id];
+            Entity.EntityItem client = _clients[id];
 
             if (client != null)
             {
@@ -62,7 +56,7 @@ namespace Spare.Jsonp
             }
             else
             {
-                client = new Entity.Entity(_ctiService);
+                client = new Entity.EntityItem(_ctiService);
                 _clients.Add(client);
             }
 
@@ -79,7 +73,7 @@ namespace Spare.Jsonp
         #region AgentState
 
         public LoginResponse LoginAgent(Guid id, string agent, string password, string station, AgentWorkMode workmode = AgentWorkMode.Auxiliary) {
-            Entity.Entity client = _clients[id];
+            Entity.EntityItem client = _clients[id];
             if ((id == Guid.Empty) || (client == null)) { return new LoginResponse() { Error = MessageConstant.UNREGISTERED }; };
 
             if (client.LoginAgent(station, agent, password, (int)workmode))
@@ -91,7 +85,7 @@ namespace Spare.Jsonp
 
         public Response LogoutAgent(Guid id, string agent, string station, int reason = 0)
         { 
-            Entity.Entity client = _clients[id];
+            Entity.EntityItem client = _clients[id];
             if ((id == Guid.Empty) || (client == null)) { return new Response() { Error = MessageConstant.UNREGISTERED }; };
 
             if (client.LogoutAgent(station, agent,  reason))
@@ -103,7 +97,7 @@ namespace Spare.Jsonp
 
         public Response SetAgentState(Guid id, string agent, string station, AgentWorkMode workmode, int reason)
         {
-            Entity.Entity client = _clients[id];
+            Entity.EntityItem client = _clients[id];
             if ((id == Guid.Empty) || (client == null)) { return new Response() { Error = MessageConstant.UNREGISTERED }; };
 
             if (client.SetAgentState(station, agent, reason, (int)workmode))
@@ -119,7 +113,7 @@ namespace Spare.Jsonp
 
         public Spare.Jsonp.Generic.Response CallObserve(Guid identifier, string extension)
         {
-            Entity.Entity client = _clients[identifier];
+            Entity.EntityItem client = _clients[identifier];
             if (client == null)
             {
                 return new Response()

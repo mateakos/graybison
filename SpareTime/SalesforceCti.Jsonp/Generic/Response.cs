@@ -9,6 +9,8 @@ namespace Spare.Jsonp.Generic
     {
         public Response() { }
 
+        public Response(Guid id) { Identifier = id; }
+
         public bool Result { get; set; }
 
         public Guid Identifier { get; set; }

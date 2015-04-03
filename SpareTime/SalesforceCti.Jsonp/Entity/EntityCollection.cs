@@ -5,21 +5,21 @@ using System.Text;
 
 namespace Spare.Jsonp.Entity
 {
-    public class EntityCollection : IList<Entity>
+    public class EntityCollection : IList<EntityItem>
     {
-        private List<Entity> _items;
+        private List<EntityItem> _items;
 
         public EntityCollection()
         {
-            _items = new List<Entity>();
+            _items = new List<EntityItem>();
         }
 
-        public int IndexOf(Entity item)
+        public int IndexOf(EntityItem item)
         {
             return _items.IndexOf(item);
         }
 
-        public void Insert(int index, Entity item)
+        public void Insert(int index, EntityItem item)
         {
             _items.Insert(index, item);
         }
@@ -29,7 +29,7 @@ namespace Spare.Jsonp.Entity
             _items.RemoveAt(index);
         }
 
-        public Entity this[int index]
+        public EntityItem this[int index]
         {
             get
             {
@@ -41,10 +41,10 @@ namespace Spare.Jsonp.Entity
             }
         }
 
-        public Entity this[Guid id]
+        public EntityItem this[Guid id]
         {
             get {
-                foreach (Entity item in _items)
+                foreach (EntityItem item in _items)
                     if (item.Id.Equals(id))
                         return item;
                 return null;
@@ -58,7 +58,19 @@ namespace Spare.Jsonp.Entity
             }
         }
 
-        public void Add(Entity item)
+        public EntityItem this[string extension]
+        {
+            get { 
+                foreach (EntityItem item in _items)
+                    if ((!String.IsNullOrEmpty(item.Extension)) && (item.Extension.Equals(extension)))
+                    {
+                        return item;
+                    }
+                return null;
+            }
+        }
+
+        public void Add(EntityItem item)
         {
             if (this[item.Id] == null)
                 _items.Add(item);
@@ -69,14 +81,14 @@ namespace Spare.Jsonp.Entity
             _items.Clear();
         }
 
-        public bool Contains(Entity item)
+        public bool Contains(EntityItem item)
         {
             if (this[item.Id] != null)
                 return true;
             return false;
         }
 
-        public void CopyTo(Entity[] array, int arrayIndex)
+        public void CopyTo(EntityItem[] array, int arrayIndex)
         {
             _items.CopyTo(array, arrayIndex);
         }
@@ -91,13 +103,13 @@ namespace Spare.Jsonp.Entity
             get { throw new NotImplementedException(); }
         }
 
-        public bool Remove(Entity item)
+        public bool Remove(EntityItem item)
         {
-            Entity rem = this[item.Id];
+            EntityItem rem = this[item.Id];
             return _items.Remove(rem != null ? rem : item);
         }
 
-        public IEnumerator<Entity> GetEnumerator()
+        public IEnumerator<EntityItem> GetEnumerator()
         {
             throw new NotImplementedException();
         }
